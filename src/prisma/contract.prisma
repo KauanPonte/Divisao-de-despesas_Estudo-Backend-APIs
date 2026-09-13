@@ -1,0 +1,91 @@
+// use prisma-8
+model User {
+  id                  Int            @id @default(autoincrement())
+  name                String
+  email               String         @unique
+  passwordHash        String         @map("password_hash")
+  group               Group[]
+  group_member        GroupMember[]
+  expense             Expense[]
+  expense_share       ExpenseShare[]
+  settlementspaying   Settlement[]   @relation("paying")
+  settlementsReceiver Settlement[]   @relation("Receiver")
+  createdAt           DateTime       @default(now())
+  updatedAt temporal.updatedAt()
+
+
+  @@map("users")
+}
+
+model Group {
+  id           Int           @id @default(autoincrement())
+  name         String
+  author       User          @relation(fields:[authorId], references:[id])
+  authorId     Int
+  group_member GroupMember[]
+  expense      Expense[]
+  settlement   Settlement[]
+  createdAt    DateTime      @default(now())
+  updatedAt temporal.updatedAt()
+
+  @@map("groups")
+}
+
+model GroupMember {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields:[userId], references:[id])
+  userId    Int
+  group     Group    @relation(fields:[groupId], references:[id])
+  groupId   Int
+  createdAt DateTime @default(now())
+  updatedAt temporal.updatedAt()
+
+  @@unique([userId, groupId])
+  @@map("group_members")
+}
+
+model Expense {
+  id            Int            @id @default(autoincrement())
+  description   String
+  value         Int            @map("centavos")
+  payer         User           @relation(fields:[payerId], references:[id])
+  payerId       Int
+  group         Group          @relation(fields:[groupId], references:[id])
+  groupId       Int
+  expense_share ExpenseShare[]
+  createdAt     DateTime       @default(now())
+  updatedAt temporal.updatedAt()
+
+
+  @@map("expenses")
+}
+
+model ExpenseShare {
+  id        Int      @id @default(autoincrement())
+  value     Int      @map("centavos")
+  user      User     @relation(fields:[userId], references:[id])
+  userId    Int
+  expense   Expense  @relation(fields:[expenseId], references:[id])
+  expenseId Int
+  createdAt DateTime @default(now())
+  updatedAt temporal.updatedAt()
+
+
+  @@unique([userId, expenseId])
+  @@map("expense_shares")
+}
+
+model Settlement {
+  id         Int      @id @default(autoincrement())
+  value      Int      @map("centavos")
+  paying     User     @relation("paying", fields:[payingId], references:[id])
+  payingId   Int
+  receiver   User     @relation("Receiver", fields:[receiverId], references:[id])
+  receiverId Int
+  group      Group    @relation(fields:[groupId], references:[id])
+  groupId    Int
+  createdAt  DateTime @default(now())
+  updatedAt temporal.updatedAt()
+
+  @@map("settlements")
+}

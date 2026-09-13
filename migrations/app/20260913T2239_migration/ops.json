@@ -1,0 +1,1189 @@
+[
+  {
+    "id": "schema.public",
+    "label": "Create schema \"public\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "Create schema \"public\"",
+        "sql": "CREATE SCHEMA IF NOT EXISTS \"public\"",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "table.expense_shares",
+    "label": "Create table \"expense_shares\"",
+    "summary": "Creates table \"expense_shares\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "expense_shares"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"expense_shares\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"expense_shares\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"expense_shares\"",
+        "sql": "CREATE TABLE \"public\".\"expense_shares\" (\n  \"centavos\" int4 NOT NULL,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"expenseId\" int4 NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  \"userId\" int4 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"expense_shares\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"expense_shares\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.expenses",
+    "label": "Create table \"expenses\"",
+    "summary": "Creates table \"expenses\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "expenses"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"expenses\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"expenses\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"expenses\"",
+        "sql": "CREATE TABLE \"public\".\"expenses\" (\n  \"centavos\" int4 NOT NULL,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"description\" text NOT NULL,\n  \"groupId\" int4 NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"payerId\" int4 NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"expenses\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"expenses\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.group_members",
+    "label": "Create table \"group_members\"",
+    "summary": "Creates table \"group_members\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "group_members"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"group_members\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"group_members\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"group_members\"",
+        "sql": "CREATE TABLE \"public\".\"group_members\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"groupId\" int4 NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  \"userId\" int4 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"group_members\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"group_members\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.groups",
+    "label": "Create table \"groups\"",
+    "summary": "Creates table \"groups\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "groups"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"groups\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"groups\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"groups\"",
+        "sql": "CREATE TABLE \"public\".\"groups\" (\n  \"authorId\" int4 NOT NULL,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"name\" text NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"groups\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"groups\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.settlements",
+    "label": "Create table \"settlements\"",
+    "summary": "Creates table \"settlements\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "settlements"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"settlements\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"settlements\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"settlements\"",
+        "sql": "CREATE TABLE \"public\".\"settlements\" (\n  \"centavos\" int4 NOT NULL,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"groupId\" int4 NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"payingId\" int4 NOT NULL,\n  \"receiverId\" int4 NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"settlements\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"settlements\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.users",
+    "label": "Create table \"users\"",
+    "summary": "Creates table \"users\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "users"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"users\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"users\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"users\"",
+        "sql": "CREATE TABLE \"public\".\"users\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"email\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"name\" text NOT NULL,\n  \"password_hash\" text NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"users\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"users\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.expense_shares.expense_shares_userId_expenseId_key",
+    "label": "Add unique constraint on \"expense_shares\" (userId, expenseId)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "expense_shares_userId_expenseId_key",
+        "table": "expense_shares"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"expense_shares_userId_expenseId_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "expense_shares_userId_expenseId_key",
+          "public",
+          "\"public\".\"expense_shares\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"expense_shares_userId_expenseId_key\"",
+        "sql": "ALTER TABLE \"public\".\"expense_shares\" ADD CONSTRAINT \"expense_shares_userId_expenseId_key\" UNIQUE (\"userId\", \"expenseId\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"expense_shares_userId_expenseId_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "expense_shares_userId_expenseId_key",
+          "public",
+          "\"public\".\"expense_shares\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.group_members.group_members_userId_groupId_key",
+    "label": "Add unique constraint on \"group_members\" (userId, groupId)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "group_members_userId_groupId_key",
+        "table": "group_members"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"group_members_userId_groupId_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "group_members_userId_groupId_key",
+          "public",
+          "\"public\".\"group_members\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"group_members_userId_groupId_key\"",
+        "sql": "ALTER TABLE \"public\".\"group_members\" ADD CONSTRAINT \"group_members_userId_groupId_key\" UNIQUE (\"userId\", \"groupId\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"group_members_userId_groupId_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "group_members_userId_groupId_key",
+          "public",
+          "\"public\".\"group_members\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.users.users_email_key",
+    "label": "Add unique constraint on \"users\" (email)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "users_email_key",
+        "table": "users"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"users_email_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "users_email_key",
+          "public",
+          "\"public\".\"users\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"users_email_key\"",
+        "sql": "ALTER TABLE \"public\".\"users\" ADD CONSTRAINT \"users_email_key\" UNIQUE (\"email\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"users_email_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "users_email_key",
+          "public",
+          "\"public\".\"users\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.expense_shares.expense_shares_expenseId_idx_69d413fa",
+    "label": "Create index \"expense_shares_expenseId_idx_69d413fa\" on \"expense_shares\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "expense_shares_expenseId_idx_69d413fa",
+        "table": "expense_shares"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"expense_shares_expenseId_idx_69d413fa\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"expense_shares_expenseId_idx_69d413fa\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"expense_shares_expenseId_idx_69d413fa\"",
+        "sql": "CREATE INDEX \"expense_shares_expenseId_idx_69d413fa\" ON \"public\".\"expense_shares\" (\"expenseId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"expense_shares_expenseId_idx_69d413fa\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"expense_shares_expenseId_idx_69d413fa\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.expense_shares.expense_shares_userId_idx_a489d58a",
+    "label": "Create index \"expense_shares_userId_idx_a489d58a\" on \"expense_shares\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "expense_shares_userId_idx_a489d58a",
+        "table": "expense_shares"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"expense_shares_userId_idx_a489d58a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"expense_shares_userId_idx_a489d58a\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"expense_shares_userId_idx_a489d58a\"",
+        "sql": "CREATE INDEX \"expense_shares_userId_idx_a489d58a\" ON \"public\".\"expense_shares\" (\"userId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"expense_shares_userId_idx_a489d58a\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"expense_shares_userId_idx_a489d58a\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.expenses.expenses_groupId_idx_e2fb5578",
+    "label": "Create index \"expenses_groupId_idx_e2fb5578\" on \"expenses\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "expenses_groupId_idx_e2fb5578",
+        "table": "expenses"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"expenses_groupId_idx_e2fb5578\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"expenses_groupId_idx_e2fb5578\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"expenses_groupId_idx_e2fb5578\"",
+        "sql": "CREATE INDEX \"expenses_groupId_idx_e2fb5578\" ON \"public\".\"expenses\" (\"groupId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"expenses_groupId_idx_e2fb5578\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"expenses_groupId_idx_e2fb5578\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.expenses.expenses_payerId_idx_3d3ae95d",
+    "label": "Create index \"expenses_payerId_idx_3d3ae95d\" on \"expenses\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "expenses_payerId_idx_3d3ae95d",
+        "table": "expenses"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"expenses_payerId_idx_3d3ae95d\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"expenses_payerId_idx_3d3ae95d\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"expenses_payerId_idx_3d3ae95d\"",
+        "sql": "CREATE INDEX \"expenses_payerId_idx_3d3ae95d\" ON \"public\".\"expenses\" (\"payerId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"expenses_payerId_idx_3d3ae95d\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"expenses_payerId_idx_3d3ae95d\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.group_members.group_members_groupId_idx_e2fb5578",
+    "label": "Create index \"group_members_groupId_idx_e2fb5578\" on \"group_members\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "group_members_groupId_idx_e2fb5578",
+        "table": "group_members"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"group_members_groupId_idx_e2fb5578\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"group_members_groupId_idx_e2fb5578\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"group_members_groupId_idx_e2fb5578\"",
+        "sql": "CREATE INDEX \"group_members_groupId_idx_e2fb5578\" ON \"public\".\"group_members\" (\"groupId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"group_members_groupId_idx_e2fb5578\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"group_members_groupId_idx_e2fb5578\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.group_members.group_members_userId_idx_a489d58a",
+    "label": "Create index \"group_members_userId_idx_a489d58a\" on \"group_members\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "group_members_userId_idx_a489d58a",
+        "table": "group_members"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"group_members_userId_idx_a489d58a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"group_members_userId_idx_a489d58a\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"group_members_userId_idx_a489d58a\"",
+        "sql": "CREATE INDEX \"group_members_userId_idx_a489d58a\" ON \"public\".\"group_members\" (\"userId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"group_members_userId_idx_a489d58a\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"group_members_userId_idx_a489d58a\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.groups.groups_authorId_idx_e47547ed",
+    "label": "Create index \"groups_authorId_idx_e47547ed\" on \"groups\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "groups_authorId_idx_e47547ed",
+        "table": "groups"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"groups_authorId_idx_e47547ed\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"groups_authorId_idx_e47547ed\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"groups_authorId_idx_e47547ed\"",
+        "sql": "CREATE INDEX \"groups_authorId_idx_e47547ed\" ON \"public\".\"groups\" (\"authorId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"groups_authorId_idx_e47547ed\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"groups_authorId_idx_e47547ed\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.settlements.settlements_groupId_idx_e2fb5578",
+    "label": "Create index \"settlements_groupId_idx_e2fb5578\" on \"settlements\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "settlements_groupId_idx_e2fb5578",
+        "table": "settlements"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"settlements_groupId_idx_e2fb5578\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"settlements_groupId_idx_e2fb5578\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"settlements_groupId_idx_e2fb5578\"",
+        "sql": "CREATE INDEX \"settlements_groupId_idx_e2fb5578\" ON \"public\".\"settlements\" (\"groupId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"settlements_groupId_idx_e2fb5578\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"settlements_groupId_idx_e2fb5578\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.settlements.settlements_payingId_idx_3085725d",
+    "label": "Create index \"settlements_payingId_idx_3085725d\" on \"settlements\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "settlements_payingId_idx_3085725d",
+        "table": "settlements"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"settlements_payingId_idx_3085725d\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"settlements_payingId_idx_3085725d\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"settlements_payingId_idx_3085725d\"",
+        "sql": "CREATE INDEX \"settlements_payingId_idx_3085725d\" ON \"public\".\"settlements\" (\"payingId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"settlements_payingId_idx_3085725d\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"settlements_payingId_idx_3085725d\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.settlements.settlements_receiverId_idx_fe124f44",
+    "label": "Create index \"settlements_receiverId_idx_fe124f44\" on \"settlements\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "settlements_receiverId_idx_fe124f44",
+        "table": "settlements"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"settlements_receiverId_idx_fe124f44\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"settlements_receiverId_idx_fe124f44\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"settlements_receiverId_idx_fe124f44\"",
+        "sql": "CREATE INDEX \"settlements_receiverId_idx_fe124f44\" ON \"public\".\"settlements\" (\"receiverId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"settlements_receiverId_idx_fe124f44\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"settlements_receiverId_idx_fe124f44\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.expense_shares.expense_shares_userId_fkey",
+    "label": "Add foreign key \"expense_shares_userId_fkey\" on \"expense_shares\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "expense_shares_userId_fkey",
+        "table": "expense_shares"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"expense_shares_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "expense_shares_userId_fkey",
+          "public",
+          "\"public\".\"expense_shares\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"expense_shares_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"expense_shares\"\nADD CONSTRAINT \"expense_shares_userId_fkey\"\nFOREIGN KEY (\"userId\")\nREFERENCES \"public\".\"users\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"expense_shares_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "expense_shares_userId_fkey",
+          "public",
+          "\"public\".\"expense_shares\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.expense_shares.expense_shares_expenseId_fkey",
+    "label": "Add foreign key \"expense_shares_expenseId_fkey\" on \"expense_shares\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "expense_shares_expenseId_fkey",
+        "table": "expense_shares"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"expense_shares_expenseId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "expense_shares_expenseId_fkey",
+          "public",
+          "\"public\".\"expense_shares\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"expense_shares_expenseId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"expense_shares\"\nADD CONSTRAINT \"expense_shares_expenseId_fkey\"\nFOREIGN KEY (\"expenseId\")\nREFERENCES \"public\".\"expenses\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"expense_shares_expenseId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "expense_shares_expenseId_fkey",
+          "public",
+          "\"public\".\"expense_shares\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.expenses.expenses_payerId_fkey",
+    "label": "Add foreign key \"expenses_payerId_fkey\" on \"expenses\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "expenses_payerId_fkey",
+        "table": "expenses"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"expenses_payerId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "expenses_payerId_fkey",
+          "public",
+          "\"public\".\"expenses\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"expenses_payerId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"expenses\"\nADD CONSTRAINT \"expenses_payerId_fkey\"\nFOREIGN KEY (\"payerId\")\nREFERENCES \"public\".\"users\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"expenses_payerId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "expenses_payerId_fkey",
+          "public",
+          "\"public\".\"expenses\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.expenses.expenses_groupId_fkey",
+    "label": "Add foreign key \"expenses_groupId_fkey\" on \"expenses\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "expenses_groupId_fkey",
+        "table": "expenses"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"expenses_groupId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "expenses_groupId_fkey",
+          "public",
+          "\"public\".\"expenses\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"expenses_groupId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"expenses\"\nADD CONSTRAINT \"expenses_groupId_fkey\"\nFOREIGN KEY (\"groupId\")\nREFERENCES \"public\".\"groups\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"expenses_groupId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "expenses_groupId_fkey",
+          "public",
+          "\"public\".\"expenses\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.group_members.group_members_userId_fkey",
+    "label": "Add foreign key \"group_members_userId_fkey\" on \"group_members\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "group_members_userId_fkey",
+        "table": "group_members"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"group_members_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "group_members_userId_fkey",
+          "public",
+          "\"public\".\"group_members\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"group_members_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"group_members\"\nADD CONSTRAINT \"group_members_userId_fkey\"\nFOREIGN KEY (\"userId\")\nREFERENCES \"public\".\"users\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"group_members_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "group_members_userId_fkey",
+          "public",
+          "\"public\".\"group_members\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.group_members.group_members_groupId_fkey",
+    "label": "Add foreign key \"group_members_groupId_fkey\" on \"group_members\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "group_members_groupId_fkey",
+        "table": "group_members"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"group_members_groupId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "group_members_groupId_fkey",
+          "public",
+          "\"public\".\"group_members\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"group_members_groupId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"group_members\"\nADD CONSTRAINT \"group_members_groupId_fkey\"\nFOREIGN KEY (\"groupId\")\nREFERENCES \"public\".\"groups\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"group_members_groupId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "group_members_groupId_fkey",
+          "public",
+          "\"public\".\"group_members\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.groups.groups_authorId_fkey",
+    "label": "Add foreign key \"groups_authorId_fkey\" on \"groups\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "groups_authorId_fkey",
+        "table": "groups"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"groups_authorId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "groups_authorId_fkey",
+          "public",
+          "\"public\".\"groups\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"groups_authorId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"groups\"\nADD CONSTRAINT \"groups_authorId_fkey\"\nFOREIGN KEY (\"authorId\")\nREFERENCES \"public\".\"users\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"groups_authorId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "groups_authorId_fkey",
+          "public",
+          "\"public\".\"groups\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.settlements.settlements_payingId_fkey",
+    "label": "Add foreign key \"settlements_payingId_fkey\" on \"settlements\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "settlements_payingId_fkey",
+        "table": "settlements"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"settlements_payingId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "settlements_payingId_fkey",
+          "public",
+          "\"public\".\"settlements\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"settlements_payingId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"settlements\"\nADD CONSTRAINT \"settlements_payingId_fkey\"\nFOREIGN KEY (\"payingId\")\nREFERENCES \"public\".\"users\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"settlements_payingId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "settlements_payingId_fkey",
+          "public",
+          "\"public\".\"settlements\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.settlements.settlements_receiverId_fkey",
+    "label": "Add foreign key \"settlements_receiverId_fkey\" on \"settlements\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "settlements_receiverId_fkey",
+        "table": "settlements"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"settlements_receiverId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "settlements_receiverId_fkey",
+          "public",
+          "\"public\".\"settlements\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"settlements_receiverId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"settlements\"\nADD CONSTRAINT \"settlements_receiverId_fkey\"\nFOREIGN KEY (\"receiverId\")\nREFERENCES \"public\".\"users\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"settlements_receiverId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "settlements_receiverId_fkey",
+          "public",
+          "\"public\".\"settlements\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.settlements.settlements_groupId_fkey",
+    "label": "Add foreign key \"settlements_groupId_fkey\" on \"settlements\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "settlements_groupId_fkey",
+        "table": "settlements"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"settlements_groupId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "settlements_groupId_fkey",
+          "public",
+          "\"public\".\"settlements\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"settlements_groupId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"settlements\"\nADD CONSTRAINT \"settlements_groupId_fkey\"\nFOREIGN KEY (\"groupId\")\nREFERENCES \"public\".\"groups\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"settlements_groupId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "settlements_groupId_fkey",
+          "public",
+          "\"public\".\"settlements\""
+        ]
+      }
+    ]
+  }
+]
